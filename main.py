@@ -63,7 +63,10 @@ while indice_estimation==-1:
     if indice_estimation==-1:
         print("La distance n'a pas été reconnue, choisissez parmi les suivantes : marathon, semi, 10km, 5km")
 
+
 entree=input("Entrez votre meilleur chrono sur cette distance de référence ("+distance_entree+") : ")
+while convertisseur(entree)==-1:
+    entree=input("Le format de chrono est incorrect, veuillez le rentrer sous la forme hh:mm:ss \nEntrez votre meilleur chrono sur cette distance de référence ("+distance_entree+") : ")
 estimation=convertisseur_inverse(convertisseur(entree)*matrice_de_conversion[indice_entree][indice_estimation])
 
 
