@@ -63,16 +63,21 @@ def calcul_vma(distance,chrono): #le chrono doit déjà être converti en second
     Entre 2h31 et 3h00 76% VMA
     Entre 3h01 et 3h30 75% VMA
     3h01 et plus 70% VMA
+
+    Puis on fait un ajustement linéaire avec le facteur x
     """
     vitesse=distance/chrono #en mètres par secondes
     if chrono<= 30*60:
         vma=vitesse/0.93
     elif chrono<=45*60:
-        vma=vitesse/0.87
+        x=1-(chrono-30*60)/(45*60-30*60)
+        vma=vitesse/(0.87+(0.93-0.87)*x)
     elif chrono<=60*60:
-        vma=vitesse/0.85
+        x=1-(chrono-45*60)/(60*60-45*60)
+        vma=vitesse/(0.85+(0.87-0.85)*x)
     elif chrono<=120*60:
-        vma=vitesse/0.8
+        x=1-(chrono-60*60)/(90*60-60*60)
+        vma=vitesse/(0.8+(0.85-0.8)*x)
     elif chrono<=150*60:
         vma=vitesse/0.78
     elif chrono<=180*60:
@@ -122,7 +127,8 @@ plan=plan.lower().replace(" ","")
 vma=calcul_vma(distances_en_m[indice_entree],convertisseur(entree))
 seuil30=0.9*vma
 seuil60=0.85*vma
-sweetspot=0.95*seuil60
+sweetspot=0.9*seuil60
+tempo=0.85*seuil60
 
 allure_vma=convertisseur_vitesse(vma)
 allure_seuil30=convertisseur_vitesse(seuil30)
@@ -134,6 +140,7 @@ plan_vma=[["10*1'","r1'"],["12*1'","r1'"],["14*1'","r1'"],["semaine_recup","sema
 plan_seuil30=[]
 plan_seuil60=[["4*5'","r1'40\""],["4*6'","r2'"],["4*7'","r2'20\""],["recup","recup"],["4*8'","r2'40\""],["4*9'","r3'"],["4*10'","r3'20\""],["affutage","affutage"]]
 plan_sweetspot=[]
+plan_tempo=[]
 SL_marathon=["1h30","1h45","2h","1h45","2h15","2h30","2h","affutage"]
 SL_semi=["1h05","1h10","1h15","1h","1h20","1h25","1h30"]
 print("Votre VMA est de : "+str(vma)+"m/s ou " + allure_vma + "/km")
